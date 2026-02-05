@@ -13,6 +13,10 @@ const fileId = (file: File | null) =>
 export const Route = createFileRoute('/about/')({
   component: RouteComponent,
   loader: async () => {
+    console.log(
+      'Loader: Fetching background colors and color names from backend',
+      import.meta.env.VITE_BACKEND,
+    )
     const bgColorsRes = await fetch(`${import.meta.env.VITE_BACKEND}/bg-colors`)
     const colorNamesRes = await fetch(
       `${import.meta.env.VITE_BACKEND}/color-names`,
