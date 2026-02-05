@@ -13,8 +13,10 @@ const fileId = (file: File | null) =>
 export const Route = createFileRoute('/about/')({
   component: RouteComponent,
   loader: async () => {
-    const bgColorsRes = await fetch('http://localhost:8080/bg-colors')
-    const colorNamesRes = await fetch('http://localhost:8080/color-names')
+    const bgColorsRes = await fetch(`${import.meta.env.VITE_BACKEND}/bg-colors`)
+    const colorNamesRes = await fetch(
+      `${import.meta.env.VITE_BACKEND}/color-names`,
+    )
     const colorNamesData = await colorNamesRes.json()
     const colorNames: Record<string, string> = {}
     for (const { color, name } of colorNamesData) {
@@ -47,10 +49,13 @@ function RouteComponent() {
   } = useQuery({
     queryKey: stableQueryKey,
     queryFn: async () => {
-      const res = await fetch(`http://localhost:8080/convert?width=${width}`, {
-        method: 'POST',
-        body: file,
-      })
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND}/convert?width=${width}`,
+        {
+          method: 'POST',
+          body: file,
+        },
+      )
       return (await res.json()) as Array<Array<string>>
     },
     initialData: null,
