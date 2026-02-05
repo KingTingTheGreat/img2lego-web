@@ -116,6 +116,8 @@ function RouteComponent() {
           </div>
         )
       )}
+
+      {error && <p>Error:{error.message}</p>}
     </section>
   )
 }
