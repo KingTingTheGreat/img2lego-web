@@ -1,5 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 
+const maxFileSizeMB = 4 as const
+
 // define props
 interface ImageFilePickerProps {
   fileState: [File | null, React.Dispatch<React.SetStateAction<File | null>>]
@@ -29,6 +31,14 @@ export default function ImageFilePicker({
     if (!nextFile) {
       setFile(null)
       setPreviewUrl(null)
+      return
+    }
+
+    if (nextFile.size > maxFileSizeMB * 1024 * 1024) {
+      e.target.value = ''
+      setFile(null)
+      setPreviewUrl(null)
+      alert(`File size exceeds the maximum limit of ${maxFileSizeMB}MB.`)
       return
     }
 
@@ -94,7 +104,7 @@ export default function ImageFilePicker({
               </h5>
               <p className="font-normal text-sm text-gray-400 md:px-6">
                 Choose photo size should be less than{' '}
-                <b className="text-gray-600">2mb</b>
+                <b className="text-gray-600">{maxFileSizeMB}MB</b>
               </p>
               <p className="font-normal text-sm text-gray-400 md:px-6">
                 and should be in{' '}
